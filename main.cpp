@@ -22,6 +22,7 @@ class Graph
           break;
         visited = DFS(edge_table, i, visited);
       }
+
       return visited;
     }
 
@@ -46,12 +47,6 @@ class Graph
       }
 
       visited = DFS(visited_edges, start, 2);
-
-      /*for (int i = 0; i < size; ++i)
-        if(!visited_edges[i])
-          return true;
-
-      return false;*/
       return (visited != size);
     }
 

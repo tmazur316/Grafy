@@ -8,20 +8,28 @@ class Graph
     std::vector<std::pair<int, int>> E;
     std::vector<int>* matrix;
 
-    void DFS(bool* edge_table, int start)
+    int DFS(bool* edge_table, int start, int visited)
     {
       if(edge_table[start])
-        return;
+        return visited;
+
       edge_table[start] = true;
+      ++visited;
 
       for(auto i : matrix[start])
-        DFS(edge_table, i);
+      {
+        if(visited == size)
+          break;
+        visited = DFS(edge_table, i, visited);
+      }
+      return visited;
     }
 
     bool check_edge(std::pair<int, int> edge)
     {
 
       bool visited_edges[size];
+      int visited = 0;
 
       for (auto i = 0; i < size; ++i)
         visited_edges[i] = false;
@@ -37,13 +45,14 @@ class Graph
         ++start;
       }
 
-      DFS(visited_edges, start);
+      visited = DFS(visited_edges, start, 2);
 
-      for (int i = 0; i < size; ++i)
+      /*for (int i = 0; i < size; ++i)
         if(!visited_edges[i])
           return true;
 
-      return false;
+      return false;*/
+      return (visited != size);
     }
 
   public:
@@ -87,9 +96,10 @@ int main()
   std::cin>>size;
 
   while(std::cin>>edge1 && std::cin>>edge2)
-    vec.push_back(std::make_pair(edge1, edge2));
+    vec.emplace_back(std::make_pair(edge1, edge2));
 
   Graph g(size, vec);
   g.find_bridges();
+  return 0;
 }
 
